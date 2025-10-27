@@ -1,0 +1,351 @@
+.research-journal-page {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.research-journal-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+}
+
+.research-journal-nav-logo {
+    font-family: 'Merriweather', serif;
+    font-size: 1.8rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.research-journal-nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.research-journal-nav-links li {
+    margin-left: 25px;
+}
+
+.research-journal-nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.research-journal-nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.research-journal-main-content {
+    display: flex;
+    flex-direction: row; 
+    flex-grow: 1;
+}
+
+.research-journal-sidebar {
+    width: 250px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    border-right: 2px solid #d1d9e6;
+    padding: 2rem 0;
+    flex-shrink: 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+}
+
+.research-journal-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.research-journal-sidebar li {
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #4a5568;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.research-journal-sidebar li:hover {
+    background: linear-gradient(90deg, #e3f2fd 0%, #f5f9ff 100%);
+    color: #1e3c72;
+    border-left-color: #5a8fd4;
+}
+
+.research-journal-sidebar li.active {
+    background: linear-gradient(90deg, #d4e8ff 0%, #e9f4ff 100%);
+    color: #1e3c72;
+    border-left: 4px solid #2a5298;
+    font-weight: bold;
+    box-shadow: inset 0 0 10px rgba(42, 82, 152, 0.1);
+}
+
+.research-journal-content-display {
+    flex-grow: 1;
+    padding: 3rem;
+    background-color: #ffffff;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.research-journal-content-display h2 {
+    font-size: 2.2rem;
+    color: #1e3c72;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #2a5298;
+    padding-bottom: 0.75rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+.research-journal-content-display h3 {
+    font-size: 1.5rem;
+    color: #2a5298;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.research-journal-content-display p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    color: #4a5568;
+}
+
+.issue-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.issue-table th, .issue-table td {
+    border: 1px solid #d1d9e6;
+    padding: 14px;
+    text-align: left;
+}
+
+.issue-table th {
+    background: linear-gradient(135deg, #2a5298 0%, #3d6bb3 100%);
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.issue-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.issue-table tbody tr:hover {
+    background-color: #e3f2fd;
+    transition: background-color 0.3s ease;
+}
+
+/* Info Table Styles (Borderless Table Layout) */
+.info-table {
+    width: 100%;
+    margin-top: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.info-header-row {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.info-header {
+    flex: 1;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #2a5298;
+    color: #1e3c72;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-content-row {
+    display: flex;
+    gap: 2rem;
+}
+
+.info-column {
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: justify;
+    color: #4a5568;
+}
+
+.about-journal-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.about-journal-list li {
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: justify;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #4a5568;
+}
+
+.about-journal-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #2a5298;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.about-journal-list li strong {
+    color: #1e3c72;
+}
+
+.about-journal-list li a {
+    color: #2a5298;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.about-journal-list li a:hover {
+    color: #1e3c72;
+    text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .research-journal-nav {
+        flex-direction: row;
+    }
+
+    .research-journal-main-content {
+        flex-direction: column;
+    }
+
+    .research-journal-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 1rem 0;
+    }
+
+    .research-journal-sidebar li {
+        padding: 0.8rem 1.5rem;
+        text-align: center;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+    }
+
+    .research-journal-sidebar li.active {
+        border-left: none;
+        border-bottom: 2px solid #007bff;
+    }
+
+    .research-journal-content-display {
+        padding: 1.5rem;
+    }
+
+    .research-journal-content-display h2 {
+        font-size: 1.8rem;
+    }
+
+    .research-journal-nav {
+        padding: 15px 20px;
+    }
+
+    .research-journal-nav-logo {
+        font-size: 1.5rem;
+    }
+
+    .issue-table, .issue-table th, .issue-table td {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .info-table {
+        padding: 1.5rem;
+    }
+
+    .info-header-row {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-header {
+        font-size: 1.2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #2a5298;
+    }
+
+    .info-content-row {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .info-column {
+        width: 100%;
+    }
+
+    .about-journal-list li {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Tablet Styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .research-journal-content-display {
+        padding: 2.5rem;
+    }
+
+    .research-journal-content-display h2 {
+        font-size: 2rem;
+    }
+
+    .info-table {
+        padding: 1.8rem;
+    }
+
+    .info-header {
+        font-size: 1.2rem;
+    }
+
+    .info-content-row {
+        gap: 1.5rem;
+    }
+
+    .about-journal-list li {
+        font-size: 0.98rem;
+    }
+}
+

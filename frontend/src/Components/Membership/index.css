@@ -1,0 +1,157 @@
+.membership-container {
+    padding: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.membership-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: linear-gradient(90deg, #2c3e50, #3498db);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.membership-navbar-heading {
+    font-family: 'Merriweather', serif;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.membership-navbar-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.membership-navbar-links li {
+    margin-left: 25px;
+}
+
+.membership-navbar-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.membership-navbar-links a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.membership-main-content {
+    display: flex;
+    flex-direction: row; /* Keep row layout for desktop */
+    flex-grow: 1;
+    background-color: #f4f7f6;
+}
+
+.membership-sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    padding: 2rem 0;
+    flex-shrink: 0;
+}
+
+.membership-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.membership-sidebar li {
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #555;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.membership-sidebar li:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.membership-sidebar li.active {
+    background-color: #e7f3ff;
+    color: #007bff;
+    border-left: 4px solid #007bff;
+    font-weight: bold;
+}
+
+.membership-content-display {
+    flex-grow: 1;
+    padding: 3rem;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+.membership-content-display h2 {
+    font-size: 2.2rem;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.membership-content-display p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #666;
+    white-space: pre-wrap;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .membership-navbar {
+        padding: 15px 20px;
+        flex-direction: row; 
+    }
+
+    .membership-navbar-heading {
+        font-size: 1.5rem;
+    }
+
+    .membership-main-content {
+        flex-direction: column; 
+    }
+
+    .membership-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 1rem 0;
+    }
+
+    .membership-sidebar li {
+        padding: 0.8rem 1.5rem;
+        text-align: center;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+    }
+
+    .membership-sidebar li.active {
+        border-left: none;
+        border-bottom: 2px solid #007bff;
+    }
+
+    .membership-content-display {
+        padding: 1.5rem;
+    }
+
+    .membership-content-display h2 {
+        font-size: 1.8rem;
+    }
+}
+
