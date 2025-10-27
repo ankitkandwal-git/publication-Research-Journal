@@ -44,18 +44,24 @@ const Certification = () => {
 
         try {
             // Use /api/upload for Vercel deployment
-            // For local development, it will use the proxy or you can set REACT_APP_API_URL
             const apiUrl = process.env.REACT_APP_API_URL || '';
+            console.log('Uploading to:', `${apiUrl}/api/upload`);
+            
             const response = await fetch(`${apiUrl}/api/upload`, {
                 method: 'POST',
                 body: formData,
             });
 
+            console.log('Response status:', response.status);
+            
             if (!response.ok) {
-                throw new Error('Upload failed! Please try again.');
+                const errorText = await response.text();
+                console.error('Upload failed:', errorText);
+                throw new Error(`Upload failed! Status: ${response.status}`);
             }
 
             const result = await response.json();
+            console.log('Upload result:', result);
             setUploadMessage(`Upload successful! File saved as: ${result.fileName}`);
 
             // Add the new certificate to our list to display it
