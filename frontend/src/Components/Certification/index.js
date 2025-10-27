@@ -64,8 +64,18 @@ const Certification = () => {
             console.log('Upload result:', result);
             setUploadMessage(`Upload successful! File saved as: ${result.fileName}`);
 
-            // Add the new certificate to our list to display it
-            setUploadedCertificates(prevCerts => [...prevCerts, result]);
+            // Add the new certificate to our list to display it.
+            // On Vercel, files are not persisted on disk; create a local preview URL from the selected file.
+            const previewUrl = URL.createObjectURL(uploadedFile);
+            const certEntry = {
+                fileName: result.fileName || uploadedFile.name,
+                mimeType: result.mimeType || uploadedFile.type,
+                fileSize: result.fileSize || uploadedFile.size,
+                previewUrl,
+                // Keep any server-provided path if present (for local dev)
+                filePath: result.filePath,
+            };
+            setUploadedCertificates(prevCerts => [...prevCerts, certEntry]);
 
         } catch (error) {
             console.error('Upload Error:', error);
@@ -204,24 +214,34 @@ const Certification = () => {
                         </div>
                     </div>
 
-                    {uploadedCertificates.length > 0 && (
+                                {uploadedCertificates.length > 0 && (
                         <div className="certification-section">
                             <h3>Uploaded Certificates</h3>
                             <div className="uploaded-certs-grid">
-                                {uploadedCertificates.map((cert, index) => (
-                                    <div key={index} className="uploaded-cert-card">
-                                        <a href={`http://localhost:3001${cert.filePath}`} target="_blank" rel="noopener noreferrer">
-                                            <div className="cert-preview">
-                                                {cert.filePath.endsWith('.pdf') ? (
-                                                    <div className="pdf-icon">PDF</div>
-                                                ) : (
-                                                    <img src={`http://localhost:3001${cert.filePath}`} alt={cert.fileName} />
-                                                )}
-                                            </div>
-                                            <div className="cert-name">{cert.fileName}</div>
-                                        </a>
-                                    </div>
-                                ))}
+                                            {uploadedCertificates.map((cert, index) => {
+                                                const isPdf = (cert.mimeType && cert.mimeType.toLowerCase().includes('pdf'))
+                                                    || (cert.fileName && cert.fileName.toLowerCase().endsWith('.pdf'))
+                                                    || (cert.filePath && cert.filePath.toLowerCase().endsWith('.pdf'));
+
+                                                // Prefer previewUrl (available after upload in this session). Fallback to filePath for local dev.
+                                                const href = cert.previewUrl || cert.filePath || '#';
+                                                const imgSrc = cert.previewUrl || cert.filePath || '';
+
+                                                return (
+                                                    <div key={index} className="uploaded-cert-card">
+                                                        <a href={href} target="_blank" rel="noopener noreferrer">
+                                                            <div className="cert-preview">
+                                                                {isPdf ? (
+                                                                    <div className="pdf-icon">PDF</div>
+                                                                ) : (
+                                                                    imgSrc ? <img src={imgSrc} alt={cert.fileName || 'Certificate'} /> : <div className="pdf-icon">FILE</div>
+                                                                )}
+                                                            </div>
+                                                            <div className="cert-name">{cert.fileName || 'Certificate'}</div>
+                                                        </a>
+                                                    </div>
+                                                );
+                                            })}
                             </div>
                         </div>
                     )}
