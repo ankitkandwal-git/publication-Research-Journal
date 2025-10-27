@@ -43,11 +43,10 @@ const Certification = () => {
         setUploadMessage('Uploading, please wait...');
 
         try {
-            // Use environment variable for backend URL
-            // For local: http://localhost:3001
-            // For production: your Cyclic backend URL
-            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
-            const response = await fetch(`${apiUrl}/upload`, {
+            // Use /api/upload for Vercel deployment
+            // For local development, it will use the proxy or you can set REACT_APP_API_URL
+            const apiUrl = process.env.REACT_APP_API_URL || '';
+            const response = await fetch(`${apiUrl}/api/upload`, {
                 method: 'POST',
                 body: formData,
             });
