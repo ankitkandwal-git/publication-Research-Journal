@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
 
@@ -43,7 +43,6 @@ const Certification = () => {
         setUploadMessage('Uploading, please wait...');
 
         try {
-            // Use /api/upload for Vercel deployment
             const apiUrl = process.env.REACT_APP_API_URL || '';
             console.log('Uploading to:', `${apiUrl}/api/upload`);
             
@@ -64,18 +63,17 @@ const Certification = () => {
             console.log('Upload result:', result);
             setUploadMessage(`Upload successful! File saved as: ${result.fileName}`);
 
-            // Add the new certificate to our list to display it.
-            // On Vercel, files are not persisted on disk; create a local preview URL from the selected file.
+            // Prefer permanent Cloudinary URL if provided
             const previewUrl = URL.createObjectURL(uploadedFile);
             const certEntry = {
                 fileName: result.fileName || uploadedFile.name,
                 mimeType: result.mimeType || uploadedFile.type,
                 fileSize: result.fileSize || uploadedFile.size,
-                previewUrl,
-                // Keep any server-provided path if present (for local dev)
-                filePath: result.filePath,
+                url: result.url || previewUrl,
+                publicId: result.publicId,
+                resourceType: result.resourceType,
             };
-            setUploadedCertificates(prevCerts => [...prevCerts, certEntry]);
+            setUploadedCertificates(prevCerts => [certEntry, ...prevCerts]);
 
         } catch (error) {
             console.error('Upload Error:', error);
@@ -93,6 +91,24 @@ const Certification = () => {
             }
         }, 3000);
     };
+
+    // Load existing certificates from Cloudinary (persistent)
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const apiUrl = process.env.REACT_APP_API_URL || '';
+                const res = await fetch(`${apiUrl}/api/certificates`);
+                if (!res.ok) return;
+                const data = await res.json();
+                if (data && Array.isArray(data.items)) {
+                    setUploadedCertificates(data.items);
+                }
+            } catch (e) {
+                console.warn('Could not load certificates list:', e);
+            }
+        };
+        load();
+    }, []);
 
     return (
         <div className="certification-page">
@@ -221,11 +237,10 @@ const Certification = () => {
                                             {uploadedCertificates.map((cert, index) => {
                                                 const isPdf = (cert.mimeType && cert.mimeType.toLowerCase().includes('pdf'))
                                                     || (cert.fileName && cert.fileName.toLowerCase().endsWith('.pdf'))
-                                                    || (cert.filePath && cert.filePath.toLowerCase().endsWith('.pdf'));
+                                                    || (cert.url && cert.url.toLowerCase().includes('.pdf'));
 
-                                                // Prefer previewUrl (available after upload in this session). Fallback to filePath for local dev.
-                                                const href = cert.previewUrl || cert.filePath || '#';
-                                                const imgSrc = cert.previewUrl || cert.filePath || '';
+                                                const href = cert.url || cert.previewUrl || cert.filePath || '#';
+                                                const imgSrc = cert.url || cert.previewUrl || cert.filePath || '';
 
                                                 return (
                                                     <div key={index} className="uploaded-cert-card">
