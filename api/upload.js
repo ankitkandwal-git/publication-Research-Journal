@@ -1,17 +1,34 @@
-const multer = require('multer');
-const path = require('path');
+// Disable body parsing, need to handle it manually for multipart
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
-// Configure multer for handling file uploads
-const storage = multer.memoryStorage(); // Use memory storage for serverless
-const upload = multer({ 
-    storage: storage,
+const multer = require('multer');
+
+// Configure multer for memory storage
+const upload = multer({
+    storage: multer.memoryStorage(),
     limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
-    }
+        fileSize: 5 * 1024 * 1024, // 5MB limit
+    },
 });
 
+// Helper function to run middleware
+function runMiddleware(req, res, fn) {
+    return new Promise((resolve, reject) => {
+        fn(req, res, (result) => {
+            if (result instanceof Error) {
+                return reject(result);
+            }
+            return resolve(result);
+        });
+    });
+}
+
 // Serverless function handler
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,43 +40,46 @@ module.exports = async (req, res) => {
 
     // Handle OPTIONS request for CORS preflight
     if (req.method === 'OPTIONS') {
-        res.status(200).end();
-        return;
+        return res.status(200).end();
     }
 
     // Only allow POST requests
     if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method not allowed' });
+        return res.status(405).json({ 
+            error: 'Method not allowed',
+            method: req.method 
+        });
     }
 
-    // Process the upload
-    return new Promise((resolve, reject) => {
-        upload.single('certificate')(req, res, (err) => {
-            if (err) {
-                console.error('Upload error:', err);
-                return resolve(res.status(400).json({ 
-                    message: 'Upload failed', 
-                    error: err.message 
-                }));
-            }
+    try {
+        // Run multer middleware
+        await runMiddleware(req, res, upload.single('certificate'));
 
-            if (!req.file) {
-                return resolve(res.status(400).json({ 
-                    message: 'Please upload a file.' 
-                }));
-            }
+        if (!req.file) {
+            return res.status(400).json({ 
+                message: 'Please upload a file.' 
+            });
+        }
 
-            // In serverless, we can't save to disk permanently
-            // For now, just return success with file info
-            // Later, you'll need to integrate with cloud storage (Cloudinary, AWS S3, etc.)
-            const fileName = `${Date.now()}-${req.file.originalname}`;
-            
-            return resolve(res.status(200).json({
-                message: 'File uploaded successfully!',
-                fileName: fileName,
-                filePath: `/uploads/${fileName}`,
-                note: 'File stored temporarily. Integrate cloud storage for permanent storage.'
-            }));
+        // Generate filename
+        const fileName = `${Date.now()}-${req.file.originalname}`;
+        
+        // Return success
+        // Note: File is in memory (req.file.buffer) but not permanently stored
+        // For permanent storage, integrate with Cloudinary, AWS S3, etc.
+        return res.status(200).json({
+            message: 'File uploaded successfully!',
+            fileName: fileName,
+            filePath: `/uploads/${fileName}`,
+            fileSize: req.file.size,
+            note: 'File received but not permanently stored. Integrate cloud storage for persistence.'
         });
-    });
-};
+
+    } catch (error) {
+        console.error('Upload error:', error);
+        return res.status(500).json({ 
+            message: 'Upload failed', 
+            error: error.message 
+        });
+    }
+}
